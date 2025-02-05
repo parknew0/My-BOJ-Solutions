@@ -1,11 +1,12 @@
-
 import java.io.*;
 import java.util.*;
 
 public class Main {
-    public static void main(String[] args) throws IOException
-    {
+    public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+
+        // N 입력 및 배열 초기화
         int n = Integer.parseInt(br.readLine());
         int[] arr = new int[n];
         StringTokenizer st = new StringTokenizer(br.readLine());
@@ -13,48 +14,27 @@ public class Main {
             arr[i] = Integer.parseInt(st.nextToken());
         }
 
+        // M 입력 및 배열 초기화
         int m = Integer.parseInt(br.readLine());
-        int[] arr2 = new int[m];
+        int[] queries = new int[m];
         st = new StringTokenizer(br.readLine());
         for (int i = 0; i < m; i++) {
-            arr2[i] = Integer.parseInt(st.nextToken());
+            queries[i] = Integer.parseInt(st.nextToken());
         }
 
+        // arr 정렬
         Arrays.sort(arr);
-        int[] original = arr2.clone();
-        Arrays.sort(arr2);
-        int arrIndex = 0;
-        int arr2Index = 0;
-        int[] res = new int[m];
-        Arrays.fill(res, 0);
 
-        Set<Integer> set = new HashSet<>();
-        while ( arr2Index < m  && arrIndex < n ) {
-            if (arr[arrIndex] == arr2[arr2Index]) {
-                set.add(arr2[arr2Index]);
-                arrIndex++;
-                arr2Index++;
-            }
-            else if (arr[arrIndex] > arr2[arr2Index]) {
-                arr2Index++;
-            }
-            else if (arr[arrIndex] < arr2[arr2Index]) {
-                arrIndex++;
+        // 각 query에 대해 이분 탐색 수행
+        for (int q : queries) {
+            if (Arrays.binarySearch(arr, q) >= 0) {
+                bw.write("1\n");
+            } else {
+                bw.write("0\n");
             }
         }
 
-        BufferedWriter bw  = new BufferedWriter(new OutputStreamWriter(System.out));
-
-        for (int i = 0 ; i < m ; i++) {
-            if (set.contains(original[i])) res[i] = 1;
-        }
-
-        for (int r : res) {
-            bw.write(r + "\n");
-        }
-
-
-
+        // 출력 flush
         bw.flush();
         bw.close();
     }
