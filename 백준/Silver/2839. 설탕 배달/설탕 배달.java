@@ -1,27 +1,20 @@
-
 import java.io.*;
 import java.util.*;
 
 public class Main {
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args){
         Scanner sc = new Scanner(System.in);
         int n = sc.nextInt();
-
-        int x = (int) Math.ceil((double) n / 3 );
-        int y = (int) Math.ceil((double) n / 5 );
-
-        int min = -1;
-
-        for (int i = 0; i <= x; i++) {
-            for (int j = 0; j <= y; j++) {
-                if ( 3 * i + 5 * j == n ) {
-                    if (min == -1){
-                        min = i + j;
-                    }
-                  min = Math.min(min,i + j);
+        
+        int ans = -1;
+        for (int i = n / 5; i >= 0; i--) {
+            int rem = n - 5 * i;
+                if (rem % 3 == 0) {
+                    ans = i + rem / 3;
+                    break;  // i를 내림차순으로 탐색하므로 최초 발견 시 최소 봉지 수임
                 }
             }
-        }
-        System.out.println(min);
-    }
+            System.out.println(ans);
+
+       }
 }
