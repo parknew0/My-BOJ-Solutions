@@ -3,47 +3,57 @@ import java.util.*;
 
 public class Main {
     static int[] arr;
-    static Map<String, Integer> memo; // 구간 합을 저장하는 Map
-
+    static int[] seg;  // 세그먼트 트리 배열
+    static int n;
+    
     public static void main(String[] args) throws Exception {
+        // 빠른 입력을 위해 BufferedReader 사용
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
         
-        int N = Integer.parseInt(st.nextToken());
-        int M = Integer.parseInt(st.nextToken());
+        n = Integer.parseInt(st.nextToken());
+        int m = Integer.parseInt(st.nextToken());
         
-        arr = new int[N];
-        memo = new HashMap<>();
-        
+        arr = new int[n];
         st = new StringTokenizer(br.readLine());
-        for (int i = 0; i < N; i++) {
+        for (int i = 0; i < n; i++){
             arr[i] = Integer.parseInt(st.nextToken());
         }
         
+        // 세그먼트 트리의 크기는 보통 4*n 정도 잡음
+        seg = new int[4 * n];
+        build(0, n - 1, 1);
+        
         StringBuilder sb = new StringBuilder();
-        for (int q = 0; q < M; q++) {
+        for (int i = 0; i < m; i++){
             st = new StringTokenizer(br.readLine());
             int L = Integer.parseInt(st.nextToken()) - 1;
             int R = Integer.parseInt(st.nextToken()) - 1;
-            
-            sb.append(getSum(L, R)).append("\n");
+            int result = query(0, n - 1, 1, L, R);
+            sb.append(result).append("\n");
         }
         System.out.print(sb);
     }
-
-    // 구간 [L, R]의 합을 반환하는 함수 (캐싱 적용)
-    static int getSum(int L, int R) {
-        String key = L + "," + R; // 구간을 문자열 키로 저장
-        if (memo.containsKey(key)) {
-            return memo.get(key); // 기존에 계산한 값이 있으면 재사용
+    
+    // 구간 [start, end]에 해당하는 노드 idx를 구성하면서 세그먼트 트리를 구축하는 함수
+    static int build(int start, int end, int idx) {
+        if(start == end) {
+            seg[idx] = arr[start];
+            return seg[idx];
         }
-
-        int sum = 0;
-        for (int i = L; i <= R; i++) {
-            sum += arr[i];
-        }
-
-        memo.put(key, sum); // 계산한 값을 저장하여 재사용
-        return sum;
+        int mid = (start + end) / 2;
+        seg[idx] = build(start, mid, idx * 2) + build(mid + 1, end, idx * 2 + 1);
+        return seg[idx];
+    }
+    
+    // 세그먼트 트리를 이용해 구간 [L, R]의 합을 구하는 함수
+    static int query(int start, int end, int idx, int L, int R) {
+        // 구간이 겹치지 않는 경우
+        if(R < start || end < L) return 0;
+        // [start, end]가 완전히 [L, R] 안에 들어오는 경우 → 이미 캐싱된 값을 사용
+        if(L <= start && end <= R) return seg[idx];
+        
+        int mid = (start + end) / 2;
+        return query(start, mid, idx * 2, L, R) + query(mid + 1, end, idx * 2 + 1, L, R);
     }
 }
