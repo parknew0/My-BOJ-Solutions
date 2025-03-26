@@ -3,58 +3,50 @@ import java.io.*;
 import java.util.*;
 
 public class Main {
-    public static int n;
-    public static int m;
+    public static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    public static StringBuilder sb = new StringBuilder();
     public static int[] arr;
-    public static boolean[] visited;
     public static int[] index;
-    public static Set<String> set = new HashSet<>();
-    public static StringBuilder sb;
+    public static boolean[] used;
+    static int n, m;
 
-    public static void main(String[] args) throws IOException
-    {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    public static void main(String[] args) throws IOException {
         String[] tokens = br.readLine().split(" ");
         n = Integer.parseInt(tokens[0]);
         m = Integer.parseInt(tokens[1]);
         arr = new int[n];
-        visited = new boolean[n];
-        index = new int[m];
-
         tokens = br.readLine().split(" ");
-        for (int i = 0; i < n; i++) {
+        for (int i = 0 ; i < n ; i++) {
             arr[i] = Integer.parseInt(tokens[i]);
         }
         Arrays.sort(arr);
-
+        index = new int[m];
+        used = new boolean[n];
 
         solve(0);
+
+        System.out.print(sb);
     }
 
-    public static void solve(int depth) {
+    public static void solve (int depth) {
         if (depth == m) {
-            sb = new StringBuilder();
-            for (int i = 0; i < m; i++) {
-                sb.append(arr[index[i]]).append(" ");
+            for (int i = 0 ; i < m ; i++) {
+                sb.append(arr[index[i]]);
+                if (i < m - 1) sb.append(" ");
             }
-
-            if (set.contains(sb.toString())) {
-                return;
-            }
-            else {
-                set.add(sb.toString());
-                System.out.println(sb.toString());
-            }
+            sb.append("\n");
             return;
         }
 
-        for (int i = 0; i < n; i++) {
-            if (visited[i]) continue;
+        for (int i = 0 ; i < n ; i++) {
+            if (used[i]) continue;
+            if (i > 0 && arr[i] == arr[i - 1] && !used[i - 1]) continue;
 
+            used[i] = true;
             index[depth] = i;
-            visited[i] = true;
             solve(depth + 1);
-            visited[i] = false;
+            used[i] = false;
+
         }
     }
 }
