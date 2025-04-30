@@ -6,25 +6,26 @@ public class Main {
 
     static void makeSet(int n) {
         parent = new int[n + 1];
-        for (int i = 0; i <= n; i++) {
+        for (int i = 0 ; i <= n ; i++) {
             parent[i] = i;
         }
     }
 
-    static int find(int x) {
-        if (parent[x] == x) {
-            return x;
+    static int find(int a) {
+        if (parent[a] == a) {
+            return a;
         }
-        return parent[x] = find(parent[x]);
+
+        return parent[a] = find(parent[a]);
     }
 
     static void union(int a, int b) {
-        int rootA = find(a);
-        int rootB = find(b);
-        if (rootA != rootB) {
-            parent[rootB] = rootA;
-        }
+        int first = find(a);
+        int second = find(b);
+
+        parent[first] = second;
     }
+
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringBuilder sb  = new StringBuilder();
