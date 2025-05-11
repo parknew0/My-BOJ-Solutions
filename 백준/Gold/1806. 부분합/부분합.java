@@ -22,32 +22,22 @@ public class Main {
             return;
         }
 
-        int l = 0, r = 0, count = 0, sum = 0;
-        int lowestCount = Integer.MAX_VALUE;
+        int l = 0, r = 0, lowestCount = Integer.MAX_VALUE;
+        long sum = 0;
+
         while (r < n) {
-            //System.out.println(arr[r] + "입력");
             sum += arr[r];
-            //System.out.println(sum + " sum");
-            count++;
-            //System.out.println(count + "추가");
-
-            if (sum >= s) {
-                //System.out.println("sum >= s 통과");
-                lowestCount = Math.min(lowestCount, count);
-
-                while (sum - arr[l] >= s) {
-                    //System.out.println("sum - arr[l] >= s while문 진입");
-                    count--;
-                    //System.out.println(count + "감소");
-                    lowestCount = Math.min(lowestCount, count);
-                    sum = sum - arr[l];
-                    //System.out.println(arr[l] + "이번에 빼는 수 " +sum + " 감소된 sum");
-                    l++;
-                }
+            // sum이 S 이상인 동안
+            while (sum >= s) {
+                // (1) 현재 구간 [l..r]의 길이로 최소 갱신
+                lowestCount = Math.min(lowestCount, r - l + 1);
+                // (2) 왼쪽 한 칸 빼고 수축
+                sum -= arr[l];
+                l++;
             }
-
             r++;
         }
+
         System.out.println(lowestCount);
 
     }
