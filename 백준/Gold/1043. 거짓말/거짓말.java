@@ -31,7 +31,6 @@ public class Main {
 
     public static void main (String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringBuilder sb = new StringBuilder();
         String[] tokens = br.readLine().split(" ");
         int n = Integer.parseInt(tokens[0]);
         int m = Integer.parseInt(tokens[1]);
@@ -39,10 +38,10 @@ public class Main {
 
         setup(n);
 
-        int result = -1;
         tokens = br.readLine().split(" ");
         if (Integer.parseInt(tokens[0]) == 0) {
-            result = 0;
+            System.out.println(m);
+            return;
         }
         else if (Integer.parseInt(tokens[0]) == 1) {
             root = Integer.parseInt(tokens[1]);
@@ -70,8 +69,6 @@ public class Main {
             }
         }
 
-
-
         int count = 0;
         for (int i = 0 ; i < m ; i++) {
             boolean flag = false;
@@ -85,12 +82,7 @@ public class Main {
             if (!flag) count++;
         }
 
-        if (result == 0) {
-            System.out.println(m);
-        }
-        else {
-            System.out.println(count);
-        }
+        System.out.println(count);
 
     }
 
