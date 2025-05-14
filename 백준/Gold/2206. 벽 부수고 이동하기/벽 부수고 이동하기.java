@@ -43,7 +43,7 @@ public class Main {
         int res = -1;
         while(!queue.isEmpty()) {
             Node cur = queue.poll();
-            // System.out.println(cur.x +" "+cur.y+" "+cur.depth);
+            //System.out.println(cur.x +" "+cur.y+" "+cur.depth);
             if (cur.x == n && cur.y == m) {
                 res = cur.depth;
                 break;
@@ -56,8 +56,8 @@ public class Main {
                 if (nx < 1 || nx > n || ny < 1 || ny > m) continue;
 
                 if (map[nx][ny] == 1 && cur.broke == 0) {
-                    if (!visited[1][nx][ny]) {
-                        visited[1][nx][ny] = true;
+                    if (!visited[0][nx][ny]) {
+                        visited[0][nx][ny] = true;
                         queue.offer(new Node(nx, ny, 1, cur.depth + 1));
                     }
                 }
